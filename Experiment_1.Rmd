@@ -2,7 +2,9 @@
 title: "Experiment 1"
 author: "A & S"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,6 +13,7 @@ output: html_document
 path <- "C:/Users/annaj/OneDrive - Norwegian University of Life Sciences/Gasto/"
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = path)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 source(paste0(path, "src/help_functions.R"))
 load(paste0(path, "data/preprocessing.Rdata"))
 ```
