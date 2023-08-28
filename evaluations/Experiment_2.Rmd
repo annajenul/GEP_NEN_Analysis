@@ -1,0 +1,235 @@
+---
+title: "Experiment 2"
+author: "Anna Jenul et al."
+date: "August 2023"
+output:
+  html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+load(file = "../data/preprocessing.Rdata")
+source("help_functions.R")
+```
+
+```{r packages, message=FALSE, echo=F}
+library(dplyr)
+library(knitr)
+library(plyr)
+```
+
+```{r load UBayFS}
+# load UBayFS features
+feature_df <- read.csv("../UBayFS/UBayFS_features_exp2.csv")
+```
+
+```{r matrix initializations}
+# options for maximum number of features (max_s)
+max_s_opts = unique(feature_df$max_s)  # max_s options
+nfolds = max(feature_df$fold) # number of folds
+weight_opts_literature = unique(feature_df$weight)
+```
+
+```{r feature eval, warning=F, error=F, message=F}
+pred_df <- data.frame()
+RED_df <- data.frame()
+stability_df <- data.frame()
+param_df <- data.frame()
+
+# signs within elementary models
+feature_df <- cbind(feature_df, sign = 0)
+
+# PREDICTIONS
+for(weight_ in weight_opts_literature){
+  for (max_s_ in max_s_opts) {
+    set.seed(1)
+    for (test_fold in 1:nfolds) {
+      
+      features = subset(feature_df, (max_s == max_s_) & (fold == test_fold) & (weight == weight_))$index
+      eval <- eval_all(features, 
+                                train_data = data_list[[test_fold]]$train_data, 
+                                test_data = data_list[[test_fold]]$test_data, 
+                                train_target = data_list[[test_fold]]$train_target, 
+                                test_target = data_list[[test_fold]]$test_target
+      )
+      
+      pred_df <- rbind(pred_df, 
+                       cbind(eval$res,
+                             max_s = max_s_,
+                             fold = test_fold,
+                             weight = weight_))
+      
+      param_df <- rbind(param_df,
+                    data.frame(param = eval$param,
+                               method = names(eval$param), 
+                               max_s = max_s_,
+                               fold = test_fold,
+                               weight = weight_))
+      
+      feat_inds <- (feature_df$index %in% features & 
+                      feature_df$max_s == max_s_ & 
+                      feature_df$fold == test_fold & 
+                      feature_df$weight == weight_)
+      feature_df[feat_inds, "sign"] = feature_df[feat_inds, "sign"] + eval$sign
+      
+      # RED
+      cor_mat <- cor(rbind(data_list[[test_fold]]$train_data[, features],
+                           data_list[[test_fold]]$test_data[, features])) # feature-wise correlation matrix
+      RED_df <- rbind(RED_df, 
+                      data.frame(RED = mean(abs(cor_mat[upper.tri(cor_mat)])),
+                                 max_s = max_s_,
+                                 fold = test_fold,
+                                 weight = weight_))
+    }
+    
+    # stability
+    f_mat <- matrix(0, nrow = nfeats, ncol = nfolds)
+    features <- subset(feature_df, (max_s == max_s_) & (weight == weight_)) %>% 
+      select(index, fold) %>% 
+      as.matrix()
+    f_mat[features] <- f_mat[features] + 1
+    
+    stab = getStability(t(f_mat))
+    stability_df <- rbind(stability_df, 
+                          cbind(max_s = max_s_,
+                                weight = weight_,
+                                stab))
+  }
+}
+
+RED_df <- RED_df %>% group_by(max_s, weight) %>% 
+  summarize(value = mean(RED), 
+            variance = var(RED), 
+            lower = min(RED),
+            upper = max(RED)) %>% 
+  as.data.frame()
+
+summary_df <- pred_df %>% group_by(metric, model, type, max_s, weight) %>%
+  summarize(mean = mean(value),
+            median = median(value),
+            sd = sd(value),
+            min = min(value),
+            max = max(value)) %>% 
+  as.data.frame()
+```
+
+# PREDICTION PLOT UBAYFS
+
+```{r prediction plot UBayFS}
+plot_performance2 <- function(type_ = "test", metric_ = "RMSE", model_ = "knn", max_s_ = 20){
+  p <- pred_df %>% subset(type == type_ & metric == metric_ & model == model_ & max_s == max_s_)  %>% 
+    mutate(fold = as.factor(fold)) %>%
+    ggplot(aes(x = weight)) + 
+    geom_point(aes(y = value, pch = fold), size = 5) + 
+    geom_line(aes(y = value, lty = fold), linewidth = 1) + 
+    geom_line(data = summary_df %>% subset(max_s == max_s_ & type == type_ & metric == metric_ & model == model_),
+              aes(x = weight, 
+                  y = mean, 
+                  color = "mean"), 
+              linewidth = 1) + 
+    ylim(0, 3.5)+
+    ylab("RMSE") +
+    xlab("prior weight") + 
+    scale_x_continuous(breaks = weight_opts_literature) +
+    theme_bw() + 
+    theme(text = element_text(size = 22), 
+          legend.position = "top",
+          axis.text.x = element_text(angle = 45, hjust = 1)) + 
+    guides(fill="none", color = guide_legend(title = "")) + 
+    scale_fill_manual(values = "red") + 
+    scale_color_manual(values = "red")
+  
+  return(p)
+}
+     
+p <- plot_performance2(max_s_ = 20, type_ = "test", metric_ = "RMSE", model_ = "knn")
+p
+
+p <- plot_performance2(max_s_ = 20, type_ = "test", metric_ = "RMSE", model_ = "linear")
+p
+```
+
+# STABILITY PLOT UBAYFS
+
+```{r plot stability UBayFS}
+plot_stability2 <- function(max_s_ = 20){
+  p <- rbind(cbind(stability_df, score = "stability"),
+             cbind(RED_df, score = "RED"),
+             cbind(max_s = 20, 
+                   PERC_df, 
+                   score = "PERC")
+             ) %>% 
+    subset(max_s == max_s_)  %>% 
+    ggplot(aes(x = weight, y = value, color = score, fill = score)) + 
+    geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2)+
+    geom_point(size = 5) + 
+    geom_line(linewidth = 1) + 
+    ylim(-0.05, 1)+
+    ylab("score") +
+    xlab("prior weight") + 
+    scale_x_continuous(breaks = weight_opts_literature) +
+    theme_bw() + 
+    theme(text = element_text(size = 22), 
+          legend.position = "top", 
+          legend.title = element_blank(),
+          axis.text.x = element_text(angle = 45, hjust = 1)) 
+  
+  return(p)
+}
+
+p <- plot_stability2(max_s_ = 20)
+p
+```
+
+
+# FEATURE TABLE
+
+```{r select features, echo=T,  warning=FALSE, message=FALSE, error=FALSE}
+feature_counts <- read.csv("feature_counts_exp1.csv")
+
+# original order: blood, image, hist, NA, pat_char, treatment; 
+# new order: pat_char, blood, hist, image, treatment
+block_reordering <- c("1" = "2", "2" = "4","3" = "3","5" = "1","6" = "5") 
+block_index_new <- block_index %>% 
+  as.character() %>% 
+  plyr::revalue(replace = block_reordering) %>% 
+  as.integer()
+feature_order <- order(block_index_new)
+
+weight_levels <- c("50", "110")
+f_mat <- matrix(0, ncol = 2, nrow = nfeats)
+sign_mat <- matrix(0, ncol = 2, nrow = nfeats)
+colnames(f_mat) <- colnames(sign_mat) <- weight_levels
+
+for(fold_ in 1:nfolds){
+  for(weight_ in weight_levels){
+    features <- feature_df %>% subset(max_s == 20 & weight == weight_ & fold == fold_)
+    f_mat[features$index, weight_] <- f_mat[features$index, weight_] + 1
+    sign_mat[features$index, weight_] <- sign_mat[features$index, weight_] + features$sign
+  }
+}
+
+weight_cols = data.frame(
+  UBayFS_with_prior50 = paste0(f_mat[,"50"], 
+                                  ifelse(sign_mat[,"50"] != 0, paste0("(", 
+                                         ifelse(sign_mat[,"50"] > 0, 
+                                                ifelse(sign_mat[,"50"] == f_mat[,"50"], "++", "+"),
+                                                ifelse(sign_mat[,"50"] == -f_mat[,"50"], "--", "-")),
+                                                ")"), "")),
+  UBayFS_with_prior110 = paste0(f_mat[,"110"], 
+                                  ifelse(sign_mat[,"110"] != 0, paste0("(", 
+                                         ifelse(sign_mat[,"110"] > 0, 
+                                                ifelse(sign_mat[,"110"] == f_mat[,"110"], "++", "+"),
+                                                ifelse(sign_mat[,"110"] == -f_mat[,"110"], "--", "-")),
+                                                ")"), ""))
+  )
+
+feature_counts <- cbind(feature_counts, 
+                        weight_cols)
+
+kable(feature_counts[feature_order,])
+```
+
+
+

@@ -1,0 +1,16 @@
+---
+title: "Feature overview"
+author: "Anna Jenul et al."
+date: "August 2023"
+output:
+  html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+```
+
+```{r run, echo = F}
+feats <- read.csv("../data/overview.csv", sep = ";")
+kable(feats)
+```
