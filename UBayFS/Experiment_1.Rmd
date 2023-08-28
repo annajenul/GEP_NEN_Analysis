@@ -3,8 +3,7 @@ title: "Experiment 1"
 author: "Anna Jenul et al."
 date: "August 2023"
 output:
-  pdf_document: default
-  html_document: default
+  html_document
 ---
 
 ```{r setup, include=FALSE}
