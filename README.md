@@ -7,4 +7,11 @@ This repository is intended to provide supplementary material for the experiment
 
 ## Structure
 
-Experiments have been conducted in R (UBayFS) and Python (RENT), evaluations have been made in R only. Code to reproduce the selected features can be found in the directories RENT and UBayFS, respectively. Resulting feature sets are stored in Rdata-files, which is used for evaluating the predictive performance, stability, etc.
+Experiments have been conducted in R (UBayFS) and Python (RENT), evaluations have been made in R only. Code to reproduce the selected features can be found in the directories <tt>RENT</tt> and <tt>UBayFS</tt>, respectively. Feature sets produced by each method are stored in csv-files. In directory <tt>evaluations</tt>, scripts are provided to compute evaluation metrics and visualizations used in the abovementioned paper.
+
+## Contact
+
+For questions and suggestions, please contact the following contributors:
+
+  - <b>Code \& methodology</b>: Anna Jenul (Norwegian University of Life Sciences) <anna.jenul@nmbu.no>
+  - <b>Dataset properties \& clinical interpretation</b>: Henning Langen Stokmo (Oslo University Hospital) <h.l.stokmo@studmed.uio.no>
