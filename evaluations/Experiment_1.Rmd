@@ -25,7 +25,7 @@ RF <- read.csv("../RENT/RENT_features_all.csv")
 RF$index = RF$index + 1 # Python-R-conversion of indices
 colnames(RF) = c("index", "max_s", "fold")
 
-RF_all <- data.frame(index = rep(c(1:113),5), max_s = rep(113, 113*113*5), fold = rep(1:5, each = 113))
+RF_all <- data.frame(index = rep(c(1:113),5), max_s = rep(113, 113*5), fold = rep(1:5, each = 113))
 RF = rbind(RF, RF_all)
 
 
@@ -295,7 +295,7 @@ for(fold_ in 1:nfolds){
   }
 }
 
-feature_counts <- data.frame(block = "",
+feature_counts <- data.frame(block = block_index,
                   prior = ifelse(1:nfeats %in% prior_features_all_ind, "*", ""),
                   name = feat_names,
                   RENT = paste0(f_mat[,"RENT"], 
@@ -312,6 +312,15 @@ feature_counts <- data.frame(block = "",
                                                 ")"), ""))
                   )
 
+# original order: blood, image, hist, NA, pat_char, treatment; 
+# new order: pat_char, blood, hist, image, treatment
+block_reordering <- c("1" = "2", "2" = "4","3" = "3","5" = "1","6" = "5")
+block_index_new <- block_index %>%
+  as.character() %>%
+  plyr::revalue(replace = block_reordering) %>%
+  as.integer()
+feature_order <- order(block_index_new)
+
 write.csv(feature_counts, file = "feature_counts_exp1.csv", row.names = FALSE)
-kable(feature_counts)
+kable(feature_counts[feature_order,], row.names = FALSE)
 ```
