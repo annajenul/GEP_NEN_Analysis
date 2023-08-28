@@ -1,0 +1,76 @@
+---
+title: "Experiment 2"
+author: "Anna Jenul et al."
+date: "August 2023"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+load(file = "../data/preprocessing.Rdata")
+```
+
+```{r packages, message=FALSE, echo=F}
+library(UBayFS)
+```
+
+```{r matrix initializations}
+max_s_opts = 20
+nfolds = 5
+weight_opts_literature = c(0.1, seq(10, 110, 10))
+```
+
+```{r feature selection, eval=T, error=F, message=FALSE, warning=FALSE}
+# train UBayFS models to obtain features
+feature_df <- c()
+
+for(weight in weight_opts_literature){
+  for(max_s in max_s_opts) {
+    set.seed(1)
+    for (test_fold in 1:nfolds) {
+      weight_vec = rep(0.1, nfeats)
+      weight_vec[prior_features_all_ind] = weight
+      
+      block_const <- UBayFS::buildConstraints(constraint_types = c("max_size"),
+                                              constraint_vars = max_s,
+                                              num_elements = nfeats,
+                                              rho = Inf)
+      
+      # build model
+      model = build.UBaymodel(data_list[[test_fold]]$train_data,
+                            target = as.numeric(data_list[[test_fold]]$train_target$category), 
+                            M = 100,
+                            tt_split = 0.75, 
+                            nf = max_s, 
+                            method = "mRMR",
+                            prior_model ="dirichlet",
+                            weights = weight_vec,
+                            lam = 10,
+                            constraints = buildConstraints(constraint_types = c("max_size"),
+                                                constraint_vars = max_s,
+                                                num_elements = ncol(data_list[[test_fold]]$train_data),
+                                                rho = Inf),
+                            optim_method = "GA",
+                            popsize = 100,
+                            maxiter = 100,
+                            shiny = FALSE
+      )
+      
+      # train model
+      model = train(model)
+
+      # extract features
+      features = which(model$output$feature_set[1,] == 1)
+      feature_df <- rbind(feature_df, data.frame(index = features, 
+                                                 max_s = max_s, 
+                                                 fold = test_fold,
+                                                 weight = weight))
+    }
+  }
+}
+
+write.csv(feature_df, file = "UBayFS_features_exp2.csv", row.names = FALSE)
+```
