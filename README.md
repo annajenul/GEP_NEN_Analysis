@@ -9,9 +9,9 @@ This repository is intended to provide supplementary material for the experiment
 
 Experiments have been conducted in R (UBayFS) and Python (RENT), evaluations have been made in R only. The following code is available in this repository:
 
-- Although the dataset cannot be distributed, a detailed overview of the blocks, features, and encodings is given in directory <tt>feature_overview</tt>. See [Feature overview](feature_overview/feature_overview.html).
+- Although the dataset cannot be distributed, a detailed overview of the blocks, features, and encodings is given in directory <tt>feature_overview</tt>. See [Feature overview](feature_overview/feature_overview.md).
 - Code to reproduce the selected features can be found in the directories <tt>RENT</tt> and <tt>UBayFS</tt>, respectively. Feature sets produced by each method are stored as csv-files.
-- In directory <tt>evaluations</tt>, scripts are provided to compute evaluation metrics and visualizations used in the abovementioned paper. See [Experiment 1](evaluations/Experiment_1.html) and [Experiment 2](evaluations/Experiment_2.html), respectively.
+- In directory <tt>evaluations</tt>, scripts are provided to compute evaluation metrics and visualizations used in the abovementioned paper. See [Experiment 1](evaluations/Experiment_1.md) and [Experiment 2](evaluations/Experiment_2.md), respectively.
 
 ## Contact
 
