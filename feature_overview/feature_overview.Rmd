@@ -12,6 +12,6 @@ library(knitr)
 ```
 
 ```{r run, echo = F}
-feats <- read.csv("../data/overview.csv", sep = ";")
+feats <- read.csv("../data/overview.csv", sep = ";", check.names=FALSE)
 kable(feats[,-8], row.names = FALSE)
 ```
