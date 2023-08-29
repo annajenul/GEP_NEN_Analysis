@@ -3,7 +3,8 @@ title: "Experiment 2"
 author: "Anna Jenul et al."
 date: "August 2023"
 output:
-  html_document
+  md_document:
+    variant: gfm
 ---
 
 ```{r setup, include=FALSE}
