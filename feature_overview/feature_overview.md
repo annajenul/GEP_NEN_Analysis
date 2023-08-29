@@ -1,16 +1,16 @@
 | Block.name     | Feature.name                            | Missing.values…. | Removed..reason.                                    | Encoding | No.features.after.encoding | Prior.importance |
 |:---------------|:----------------------------------------|:-----------------|:----------------------------------------------------|:---------|---------------------------:|:-----------------|
 | Baseline blood | 5-HIAA 24h Urine                        | 77.78%           | removed (\>25% NA)                                  |          |                         NA |                  |
-| Baseline blood | ALP                                     | 4.76%            |                                                     | ordinal  |                          2 | x                |
-| Baseline blood | Absolute Neutrophil Count               | 0.00%            |                                                     | none     |                          1 | x                |
+| Baseline blood | ALP                                     | 4.76%            |                                                     | ordinal  |                          2 | \*               |
+| Baseline blood | Absolute Neutrophil Count               | 0.00%            |                                                     | none     |                          1 | \*               |
 | Baseline blood | Albumin                                 | 0.00%            |                                                     | none     |                          1 |                  |
 | Baseline blood | CRP                                     | 0.00%            |                                                     | none     |                          1 |                  |
 | Baseline blood | Chromogranin A                          | 17.46%           |                                                     | ordinal  |                          2 |                  |
 | Baseline blood | Creatinine                              | 0.00%            |                                                     | ordinal  |                          1 |                  |
 | Baseline blood | Haemoglobin                             | 0.00%            |                                                     | ordinal  |                          1 |                  |
-| Baseline blood | LDH                                     | 1.59%            |                                                     | ordinal  |                          2 | x                |
+| Baseline blood | LDH                                     | 1.59%            |                                                     | ordinal  |                          2 | \*               |
 | Baseline blood | NSE                                     | 7.94%            |                                                     | ordinal  |                          2 |                  |
-| Baseline blood | Platelets                               | 1.59%            |                                                     | ordinal  |                          1 | x                |
+| Baseline blood | Platelets                               | 1.59%            |                                                     | ordinal  |                          1 | \*               |
 | Baseline blood | WBC                                     | 0.00%            |                                                     | ordinal  |                          1 |                  |
 | Imaging        | Date of Study                           | 0.00%            | removed (unimportant)                               |          |                         NA |                  |
 | Imaging        | Time of Study                           | 0.00%            | removed (unimportant)                               |          |                         NA |                  |
@@ -30,12 +30,12 @@
 | Imaging        | Matrix Size                             | 0.00%            | removed (?)                                         |          |                         NA |                  |
 | Imaging        | \# Subsets                              | 3.17%            | removed (?)                                         |          |                         NA |                  |
 | Imaging        | \# Iterations                           | 3.17%            | removed (?)                                         |          |                         NA |                  |
-| Imaging        | Total MTV \[cmˆ3\]                      | 0.00%            |                                                     | none     |                          1 | x                |
+| Imaging        | Total MTV \[cmˆ3\]                      | 0.00%            |                                                     | none     |                          1 | \*               |
 | Imaging        | SUVmean                                 | 0.00%            |                                                     | none     |                          1 |                  |
 | Imaging        | SUVmax                                  | 0.00%            |                                                     | none     |                          1 |                  |
 | Imaging        | SUVmean (total)                         | 0.00%            |                                                     | none     |                          1 |                  |
 | Imaging        | SUVmax (total)                          | 0.00%            |                                                     | none     |                          1 |                  |
-| Imaging        | Total TLG \[g\]                         | 0.00%            |                                                     | none     |                          1 | x                |
+| Imaging        | Total TLG \[g\]                         | 0.00%            |                                                     | none     |                          1 | \*               |
 | Imaging        | SRI                                     | 33.33%           | removed (\>25% NA)                                  |          |                         NA |                  |
 | New Histology  | Re-classified                           | 0.00%            | removed (no variation)                              |          |                         NA |                  |
 | New Histology  | Re-classified Ki-67 only                | 0.00%            | removed (no variation)                              |          |                         NA |                  |
@@ -44,7 +44,7 @@
 | New Histology  | Differentiation                         | 0.00%            | removed (covered by Hist Exam Metastasis?)          | one-hot  |                          0 |                  |
 | New Histology  | Hist Exam Metastasis                    | 0.00%            |                                                     | one-hot  |                          1 |                  |
 | New Histology  | Hist Exam Primary Tumour                | 0.00%            | removed (covered by Hist Exam Metastasis?)          | one-hot  |                          0 |                  |
-| New Histology  | Ki-67                                   | 0.00%            |                                                     | none     |                          1 | x                |
+| New Histology  | Ki-67                                   | 0.00%            |                                                     | none     |                          1 | \*               |
 | New Histology  | Ki-67 grouping                          | 0.00%            | removed (covered by Ki-67)                          |          |                         NA |                  |
 | New Histology  | Primary Tumour                          | 0.00%            |                                                     | one-hot  |                          7 |                  |
 | New Histology  | Tumour Morphology                       | 0.00%            |                                                     | ordinal  |                          0 |                  |
@@ -61,7 +61,7 @@
 | Baseline Char  | Age at Diagnosis                        | 0.00%            |                                                     | none     |                          1 |                  |
 | Baseline Char  | Smoking                                 | 9.52%            |                                                     | one-hot  |                          2 |                  |
 | Baseline Char  | BMI                                     | 1.59%            |                                                     | none     |                          1 |                  |
-| Baseline Char  | WHO Perf Stat                           | 1.59%            |                                                     | one-hot  |                          4 | x                |
+| Baseline Char  | WHO Perf Stat                           | 1.59%            |                                                     | one-hot  |                          4 | \*               |
 | Baseline Char  | Co-morbidity                            | 3.17%            | removed (covered by Co-morbidity Severity)          |          |                         NA |                  |
 | Baseline Char  | Co-morbidity Severity                   | 3.17%            |                                                     | ordinal  |                          2 |                  |
 | Baseline Char  | Date of Birth                           | 0.00%            | removed (covered by Age)                            |          |                         NA |                  |
@@ -78,7 +78,7 @@
 | Baseline Char  | T-stage                                 | 26.98%           | removed (\>25% NA)                                  | ordinal  |                          3 |                  |
 | Baseline Char  | N-stage                                 | 4.76%            |                                                     | ordinal  |                          2 |                  |
 | Baseline Char  | M-stage                                 | 0.00%            |                                                     | ordinal  |                          1 |                  |
-| Baseline Char  | TNM-staging                             | 0.00%            |                                                     | one-hot  |                          1 | x                |
+| Baseline Char  | TNM-staging                             | 0.00%            |                                                     | one-hot  |                          1 | \*               |
 | Baseline Char  | Stage grouped                           | 0.00%            |                                                     | one-hot  |                          1 |                  |
 | Baseline Char  | Mets(Bone)                              | 0.00%            |                                                     | one-hot  |                          1 |                  |
 | Baseline Char  | Mets(Brain)                             | 0.00%            | removed (no variation)                              |          |                         NA |                  |
