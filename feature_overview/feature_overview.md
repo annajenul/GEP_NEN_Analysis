@@ -17,19 +17,19 @@
 | Imaging        | Institution                             | 0.00%                |                                                     | one-hot          |                          2 |       |
 | Imaging        | Type of Study                           | 0.00%                | removed (no variation)                              |                  |                         NA |       |
 | Imaging        | Radiotracer                             | 0.00%                | removed (no variation)                              |                  |                         NA |       |
-| Imaging        | Dose \[MBq\]                            | 0.00%                | removed (?)                                         |                  |                         NA |       |
+| Imaging        | Dose \[MBq\]                            | 0.00%                | removed (unimportant)                               |                  |                         NA |       |
 | Imaging        | Time of Injection                       | 0.00%                | removed (covered by Time from Inj. to Scan \[min\]) |                  |                         NA |       |
 | Imaging        | Time from Injection to Scan \[hh:mm\]   | 0.00%                | removed (covered by Time from Inj. to Scan \[min\]) |                  |                         NA |       |
 | Imaging        | Time from Injection to Scan \[min\]     | 0.00%                |                                                     | none             |                          1 |       |
 | Imaging        | Height \[cm\]                           | 1.59%                |                                                     | none             |                          1 |       |
 | Imaging        | Weight \[kg\]                           | 0.00%                |                                                     | none             |                          1 |       |
 | Imaging        | Glucose \[mmol/L\]                      | 1.59%                |                                                     | none             |                          1 |       |
-| Imaging        | Treatment before Study                  | 0.00%                | removed (?)                                         |                  |                         NA |       |
-| Imaging        | Reconstruction Parameters               | 0.00%                | removed (?)                                         |                  |                         NA |       |
-| Imaging        | FWHM                                    | 3.17%                | removed (?)                                         |                  |                         NA |       |
-| Imaging        | Matrix Size                             | 0.00%                | removed (?)                                         |                  |                         NA |       |
-| Imaging        | \# Subsets                              | 3.17%                | removed (?)                                         |                  |                         NA |       |
-| Imaging        | \# Iterations                           | 3.17%                | removed (?)                                         |                  |                         NA |       |
+| Imaging        | Treatment before Study                  | 0.00%                | removed (covered by treatment block)                |                  |                         NA |       |
+| Imaging        | Reconstruction Parameters               | 0.00%                | removed (unimportant)                               |                  |                         NA |       |
+| Imaging        | FWHM                                    | 3.17%                | removed (unimportant)                               |                  |                         NA |       |
+| Imaging        | Matrix Size                             | 0.00%                | removed (unimportant)                               |                  |                         NA |       |
+| Imaging        | \# Subsets                              | 3.17%                | removed (unimportant)                               |                  |                         NA |       |
+| Imaging        | \# Iterations                           | 3.17%                | removed (unimportant)                               |                  |                         NA |       |
 | Imaging        | Total MTV \[cmˆ3\]                      | 0.00%                |                                                     | none             |                          1 | \*    |
 | Imaging        | SUVmean                                 | 0.00%                |                                                     | none             |                          1 |       |
 | Imaging        | SUVmax                                  | 0.00%                |                                                     | none             |                          1 |       |
@@ -39,19 +39,19 @@
 | Imaging        | SRI                                     | 33.33%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | New Histology  | Re-classified                           | 0.00%                | removed (no variation)                              |                  |                         NA |       |
 | New Histology  | Re-classified Ki-67 only                | 0.00%                | removed (no variation)                              |                  |                         NA |       |
-| New Histology  | Tumour Morphology LC/SC                 | 0.00%                | removed (?)                                         |                  |                         NA |       |
+| New Histology  | Tumour Morphology LC/SC                 | 0.00%                | removed (covered by Tumour Morphology)              |                  |                         NA |       |
 | New Histology  | Re-classified Morphology only           | 0.00%                | removed (no variation)                              |                  |                         NA |       |
-| New Histology  | Differentiation                         | 0.00%                | removed (covered by Hist Exam Metastasis?)          | one-hot          |                          0 |       |
+| New Histology  | Differentiation                         | 0.00%                | removed (covered by Tumour Morphology)              | one-hot          |                          0 |       |
 | New Histology  | Hist Exam Metastasis                    | 0.00%                |                                                     | one-hot          |                          1 |       |
-| New Histology  | Hist Exam Primary Tumour                | 0.00%                | removed (covered by Hist Exam Metastasis?)          | one-hot          |                          0 |       |
+| New Histology  | Hist Exam Primary Tumour                | 0.00%                | removed (covered by Hist Exam Metastasis)           | one-hot          |                          0 |       |
 | New Histology  | Ki-67                                   | 0.00%                |                                                     | none             |                          1 | \*    |
 | New Histology  | Ki-67 grouping                          | 0.00%                | removed (covered by Ki-67)                          |                  |                         NA |       |
 | New Histology  | Primary Tumour                          | 0.00%                |                                                     | one-hot          |                          7 |       |
-| New Histology  | Tumour Morphology                       | 0.00%                |                                                     | ordinal          |                          0 |       |
+| New Histology  | Tumour Morphology                       | 0.00%                |                                                     | ordinal          |                          1 |       |
 | New Histology  | Architecture                            | 1.59%                |                                                     | one-hot          |                          4 |       |
 | New Histology  | Vessel Pattern                          | 1.59%                |                                                     | one-hot          |                          1 |       |
 | New Histology  | Biopsy Location                         | 3.17%                |                                                     | one-hot          |                          6 |       |
-| New Histology  | Co-existing Neoplasm                    | 0.00%                |                                                     | one-hot          |                          4 |       |
+| New Histology  | Co-existing Neoplasm                    | 0.00%                |                                                     | one-hot          |                          3 |       |
 | New Histology  | Co-existing NET                         | 0.00%                | removed (no variation)                              |                  |                         NA |       |
 | New Histology  | Stroma                                  | 1.59%                |                                                     | one-hot          |                          2 |       |
 | New Histology  | Geographic Necrosis                     | 1.59%                |                                                     | one-hot          |                          1 |       |
@@ -65,17 +65,17 @@
 | Baseline Char  | Co-morbidity                            | 3.17%                | removed (covered by Co-morbidity Severity)          |                  |                         NA |       |
 | Baseline Char  | Co-morbidity Severity                   | 3.17%                |                                                     | ordinal          |                          2 |       |
 | Baseline Char  | Date of Birth                           | 0.00%                | removed (covered by Age)                            |                  |                         NA |       |
-| Baseline Char  | Date of Diagnosis                       | 0.00%                | removed (date)                                      |                  |                         NA |       |
+| Baseline Char  | Date of Diagnosis                       | 0.00%                | removed (covered by other time variables)           |                  |                         NA |       |
 | Baseline Char  | Loc Adv Resectable Disease              | 0.00%                |                                                     | one-hot          |                          1 |       |
 | Baseline Char  | Loc Reccurence                          | 0.00%                |                                                     | one-hot          |                          1 |       |
 | Baseline Char  | Metastatic Disease at Time of Diagnosis | 0.00%                |                                                     | one-hot          |                          1 |       |
-| Baseline Char  | Date of Metastasis                      | 0.00%                | removed (date)                                      |                  |                         NA |       |
+| Baseline Char  | Date of Metastasis                      | 0.00%                | removed (covered by other time variables)           |                  |                         NA |       |
 | Baseline Char  | Treatment Intention                     | 0.00%                |                                                     | one-hot          |                          1 |       |
 | Baseline Char  | Family Member with NET                  | 33.33%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Baseline Char  | Prior Other Cancer                      | 0.00%                |                                                     | one-hot          |                          1 |       |
 | Baseline Char  | Date of Diagnosis Prior Cancer          | 84.13%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Baseline Char  | Living Alone                            | 0.00%                |                                                     | one-hot          |                          1 |       |
-| Baseline Char  | T-stage                                 | 26.98%               | removed (\>25% NA)                                  | ordinal          |                          3 |       |
+| Baseline Char  | T-stage                                 | 26.98%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Baseline Char  | N-stage                                 | 4.76%                |                                                     | ordinal          |                          2 |       |
 | Baseline Char  | M-stage                                 | 0.00%                |                                                     | ordinal          |                          1 |       |
 | Baseline Char  | TNM-staging                             | 0.00%                |                                                     | one-hot          |                          1 | \*    |
@@ -96,7 +96,7 @@
 | Baseline Char  | Resection                               | 76.19%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Baseline Char  | Radical Surgery                         | 1.59%                |                                                     | one-hot          |                          1 |       |
 | Baseline Char  | Date of Radical Surgery                 | 92.06%               | removed (\>25% NA)                                  |                  |                         NA |       |
-| Baseline Char  | Date of Last Observation                | 0.00%                | removed (date)                                      |                  |                         NA |       |
+| Baseline Char  | Date of Last Observation                | 0.00%                | removed (covered by other time variables)           |                  |                         NA |       |
 | Baseline Char  | Time from PET to PT Resection (days)    | 73.02%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Baseline Char  | Time from PET to Metastasis (days)      | 0.00%                |                                                     | none             |                          1 |       |
 | Baseline Char  | Time from PET to Diagnosis (days)       | 0.00%                |                                                     | none             |                          1 |       |
@@ -104,10 +104,10 @@
 | Baseline Char  | Time from diag to mets (months)         | 0.00%                |                                                     | none             |                          1 |       |
 | Treatment      | Time from PET to first treatment (days) | 0.00%                |                                                     | none             |                          1 |       |
 | Treatment      | Chemotherapy Type                       | 0.00%                |                                                     | one-hot          |                          4 |       |
-| Treatment      | Date of First Treatment                 | 0.00%                | removed (date)                                      |                  |                         NA |       |
-| Treatment      | Date of Last Treatment                  | 1.59%                | removed (date)                                      |                  |                         NA |       |
-| Treatment      | Date of Progression                     | 1.59%                | removed (date)                                      |                  |                         NA |       |
-| Treatment      | Duration of Response (Months)           | 9.52%                | removed (date)                                      |                  |                         NA |       |
+| Treatment      | Date of First Treatment                 | 0.00%                | removed (covered by other time variables)           |                  |                         NA |       |
+| Treatment      | Date of Last Treatment                  | 1.59%                | removed (covered by other time variables)           |                  |                         NA |       |
+| Treatment      | Date of Progression                     | 1.59%                | removed (covered by other time variables)           |                  |                         NA |       |
+| Treatment      | Duration of Response (Months)           | 9.52%                | removed (covered by other time variables)           |                  |                         NA |       |
 | Treatment      | Number of Courses                       | 1.59%                |                                                     | none             |                          1 |       |
 | Treatment      | Other Chemotherapy                      | 82.54%               | removed (\>25% NA)                                  |                  |                         NA |       |
 | Treatment      | Treatment Stopped                       | 1.59%                |                                                     | one-hot          |                          3 |       |
