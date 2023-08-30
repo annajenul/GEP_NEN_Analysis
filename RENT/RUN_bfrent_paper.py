@@ -14,13 +14,9 @@ output:
 import pandas as pd
 import numpy as np
 import bfrent
-import seaborn as sns
 from RENT import RENT
-
-from sklearn.linear_model import ElasticNet
 from sklearn.preprocessing import StandardScaler, PowerTransformer
-from sklearn.metrics import r2_score
-from sklearn.metrics import mean_squared_error
+
 
 
 # =============================================================================
@@ -139,7 +135,6 @@ df_r2 = bfr.overall_performance_summary('r2')
 df_MAE = bfr.overall_performance_summary('MAE')
 df_MSE = bfr.overall_performance_summary('MSE')
 df_RMSE = bfr.overall_performance_summary('RMSE')
-df_MAXE = bfr.overall_performance_summary('MAXE')
 
 
 
