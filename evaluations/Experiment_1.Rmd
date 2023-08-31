@@ -49,9 +49,6 @@ RED_df <- data.frame()
 stability_df <- data.frame()
 param_df <- data.frame()
 
-# signs within elementary models
-feature_df <- cbind(feature_df, sign = 0)
-
 # PREDICTIONS
 for(fs_ in fs_opts){
   for (max_s_ in max_s_opts) {
@@ -78,12 +75,6 @@ for(fs_ in fs_opts){
                                max_s = max_s_,
                                fold = test_fold,
                                fs = fs_))
-      
-      feat_inds <- (feature_df$index %in% features & 
-                      feature_df$max_s == max_s_ & 
-                      feature_df$fold == test_fold & 
-                      feature_df$fs == fs_)
-      feature_df[feat_inds, "sign"] = feature_df[feat_inds, "sign"] + eval$sign
       
       # RED
       cor_mat <- cor(rbind(data_list[[test_fold]]$train_data[, features],
@@ -191,15 +182,19 @@ plot_performance <- function(fs_ = "UBayFS", type_ = "test", metric_ = "RMSE", m
      
 p <- plot_performance(fs_ = "UBayFS", type_ = "test", metric_ = "RMSE", model_ = "knn")
 p
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_kNN_UBayFS.png", width = 8, height = 5)
 
 p <- plot_performance(fs_ = "RENT", type_ = "test", metric_ = "RMSE", model_ = "knn")
 p
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_kNN_RENT.png", width = 8, height = 5)
 
 p <- plot_performance(fs_ = "UBayFS", type_ = "test", metric_ = "RMSE", model_ = "linear")
 p
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_linear_UBayFS.png", width = 8, height = 5)
 
 p <- plot_performance(fs_ = "RENT", type_ = "test", metric_ = "RMSE", model_ = "linear")
 p
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_linear_RENT.png", width = 8, height = 5)
 ```
 
 # STABILITY PLOT UBAYFS
@@ -224,9 +219,11 @@ plot_stability <- function(fs_ = "UBayFS"){
 
 p <- plot_stability(fs_ = "UBayFS")
 p
+ggsave(p, filename = "../plots/experiment_1_stability_red_UBayFS.png", width = 8, height = 5)
 
 p <- plot_stability(fs_ = "RENT")
 p
+ggsave(p, filename = "../plots/experiment_1_stability_red_RENT.png", width = 8, height = 5)
 ```
 
 # IN-DEPTH ANALYSIS FOLD 2 & 4
@@ -274,38 +271,27 @@ p <- fold_res %>%
     theme_bw() + 
     theme(text = element_text(size = 16))
 p
+ggsave(p, filename = "../plots/experiment_1_histograms.png", width = 8, height = 5)
 ```
 
 # FEATURE TABLE
 
 ```{r select features, echo=T,  warning=FALSE, message=FALSE, error=FALSE}
 f_mat <- matrix(0, ncol = 2, nrow = nfeats)
-sign_mat <- matrix(0, ncol = 2, nrow = nfeats)
-colnames(f_mat) <- colnames(sign_mat) <- c("RENT", "UBayFS")
+colnames(f_mat) <- c("RENT", "UBayFS")
 
 for(fold_ in 1:nfolds){
   for(fs_ in c("RENT", "UBayFS")){
     features <- feature_df %>% subset(max_s == 20 & fs == fs_ & fold == fold_)
     f_mat[features$index, fs_] <- f_mat[features$index, fs_] + 1
-    sign_mat[features$index, fs_] <- sign_mat[features$index, fs_] + features$sign
   }
 }
 
 feature_counts <- data.frame(block = block_index,
                   prior = ifelse(1:nfeats %in% prior_features_all_ind, "*", ""),
                   name = feat_names,
-                  RENT = paste0(f_mat[,"RENT"], 
-                                  ifelse(sign_mat[,"RENT"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"RENT"] > 0, 
-                                                ifelse(sign_mat[,"RENT"] == f_mat[,"RENT"], "++", "+"),
-                                                ifelse(sign_mat[,"RENT"] == -f_mat[,"RENT"], "--", "-")),
-                                                ")"), "")),
-                  UBayFS = paste0(f_mat[,"UBayFS"], 
-                                  ifelse(sign_mat[,"UBayFS"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"UBayFS"] > 0, 
-                                                ifelse(sign_mat[,"UBayFS"] == f_mat[,"UBayFS"], "++", "+"),
-                                                ifelse(sign_mat[,"UBayFS"] == -f_mat[,"UBayFS"], "--", "-")),
-                                                ")"), ""))
+                  RENT = f_mat[,"RENT"],
+                  UBayFS = f_mat[,"UBayFS"]
                   )
 
 # original order: blood, image, hist, NA, pat_char, treatment; 

@@ -36,9 +36,6 @@ RED_df <- data.frame()
 stability_df <- data.frame()
 param_df <- data.frame()
 
-# signs within elementary models
-feature_df <- cbind(feature_df, sign = 0)
-
 # PREDICTIONS
 for(weight_ in weight_opts_literature){
   set.seed(1)
@@ -64,12 +61,6 @@ for(weight_ in weight_opts_literature){
                              max_s = max_s,
                              fold = test_fold,
                              weight = weight_))
-    
-    feat_inds <- (feature_df$index %in% features & 
-                  feature_df$max_s == max_s & 
-                  feature_df$fold == test_fold & 
-                  feature_df$weight == weight_)
-    feature_df[feat_inds, "sign"] = feature_df[feat_inds, "sign"] + eval$sign
         
     # RED
     cor_mat <- cor(rbind(data_list[[test_fold]]$train_data[, features],
@@ -143,9 +134,11 @@ plot_performance2 <- function(type_ = "test", metric_ = "RMSE", model_ = "knn", 
      
 p <- plot_performance2(max_s_ = 20, type_ = "test", metric_ = "RMSE", model_ = "knn")
 p
+ggsave(p, filename = "../plots/experiment_2_performance_max_s_kNN_UBayFS.png", width = 8, height = 5)
 
 p <- plot_performance2(max_s_ = 20, type_ = "test", metric_ = "RMSE", model_ = "linear")
 p
+ggsave(p, filename = "../plots/experiment_2_performance_max_s_linear_UBayFS.png", width = 8, height = 5)
 ```
 
 # Check how often the prior features were selected.
@@ -192,6 +185,7 @@ plot_stability2 <- function(max_s_ = 20){
 
 p <- plot_stability2(max_s_ = 20)
 p
+ggsave(p, filename = "../plots/experiment_2_stability_red.png", width = 8, height = 5)
 ```
 
 
@@ -211,30 +205,18 @@ feature_order <- order(block_index_new)
 
 weight_levels <- c("50", "110")
 f_mat <- matrix(0, ncol = 2, nrow = nfeats)
-sign_mat <- matrix(0, ncol = 2, nrow = nfeats)
-colnames(f_mat) <- colnames(sign_mat) <- weight_levels
+colnames(f_mat) <- weight_levels
 
 for(fold_ in 1:nfolds){
   for(weight_ in weight_levels){
     features <- feature_df %>% subset(max_s == 20 & weight == weight_ & fold == fold_)
     f_mat[features$index, weight_] <- f_mat[features$index, weight_] + 1
-    sign_mat[features$index, weight_] <- sign_mat[features$index, weight_] + features$sign
   }
 }
 
 weight_cols = data.frame(
-  UBayFS_with_prior50 = paste0(f_mat[,"50"], 
-                                  ifelse(sign_mat[,"50"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"50"] > 0, 
-                                                ifelse(sign_mat[,"50"] == f_mat[,"50"], "++", "+"),
-                                                ifelse(sign_mat[,"50"] == -f_mat[,"50"], "--", "-")),
-                                                ")"), "")),
-  UBayFS_with_prior110 = paste0(f_mat[,"110"], 
-                                  ifelse(sign_mat[,"110"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"110"] > 0, 
-                                                ifelse(sign_mat[,"110"] == f_mat[,"110"], "++", "+"),
-                                                ifelse(sign_mat[,"110"] == -f_mat[,"110"], "--", "-")),
-                                                ")"), ""))
+  UBayFS_with_prior50 = f_mat[,"50"],
+  UBayFS_with_prior110 = f_mat[,"110"]
   )
 
 feature_counts <- cbind(feature_counts, 

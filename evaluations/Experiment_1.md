@@ -30,9 +30,6 @@ RED_df <- data.frame()
 stability_df <- data.frame()
 param_df <- data.frame()
 
-# signs within elementary models
-feature_df <- cbind(feature_df, sign = 0)
-
 # PREDICTIONS
 for(fs_ in fs_opts){
   for (max_s_ in max_s_opts) {
@@ -59,12 +56,6 @@ for(fs_ in fs_opts){
                                max_s = max_s_,
                                fold = test_fold,
                                fs = fs_))
-      
-      feat_inds <- (feature_df$index %in% features & 
-                      feature_df$max_s == max_s_ & 
-                      feature_df$fold == test_fold & 
-                      feature_df$fs == fs_)
-      feature_df[feat_inds, "sign"] = feature_df[feat_inds, "sign"] + eval$sign
       
       # RED
       cor_mat <- cor(rbind(data_list[[test_fold]]$train_data[, features],
@@ -207,6 +198,8 @@ p
 ![](Experiment_1_files/figure-gfm/prediction%20plot%20UBayFS-1.png)<!-- -->
 
 ``` r
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_kNN_UBayFS.png", width = 8, height = 5)
+
 p <- plot_performance(fs_ = "RENT", type_ = "test", metric_ = "RMSE", model_ = "knn")
 p
 ```
@@ -214,6 +207,8 @@ p
 ![](Experiment_1_files/figure-gfm/prediction%20plot%20UBayFS-2.png)<!-- -->
 
 ``` r
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_kNN_RENT.png", width = 8, height = 5)
+
 p <- plot_performance(fs_ = "UBayFS", type_ = "test", metric_ = "RMSE", model_ = "linear")
 p
 ```
@@ -221,11 +216,17 @@ p
 ![](Experiment_1_files/figure-gfm/prediction%20plot%20UBayFS-3.png)<!-- -->
 
 ``` r
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_linear_UBayFS.png", width = 8, height = 5)
+
 p <- plot_performance(fs_ = "RENT", type_ = "test", metric_ = "RMSE", model_ = "linear")
 p
 ```
 
 ![](Experiment_1_files/figure-gfm/prediction%20plot%20UBayFS-4.png)<!-- -->
+
+``` r
+ggsave(p, filename = "../plots/experiment_1_performance_max_s_linear_RENT.png", width = 8, height = 5)
+```
 
 # STABILITY PLOT UBAYFS
 
@@ -254,11 +255,17 @@ p
 ![](Experiment_1_files/figure-gfm/plot%20stability%20UBayFS-1.png)<!-- -->
 
 ``` r
+ggsave(p, filename = "../plots/experiment_1_stability_red_UBayFS.png", width = 8, height = 5)
+
 p <- plot_stability(fs_ = "RENT")
 p
 ```
 
 ![](Experiment_1_files/figure-gfm/plot%20stability%20UBayFS-2.png)<!-- -->
+
+``` r
+ggsave(p, filename = "../plots/experiment_1_stability_red_RENT.png", width = 8, height = 5)
+```
 
 # IN-DEPTH ANALYSIS FOLD 2 & 4
 
@@ -309,36 +316,28 @@ p
 
 ![](Experiment_1_files/figure-gfm/analyze%20best%20and%20worst%20fold-1.png)<!-- -->
 
+``` r
+ggsave(p, filename = "../plots/experiment_1_histograms.png", width = 8, height = 5)
+```
+
 # FEATURE TABLE
 
 ``` r
 f_mat <- matrix(0, ncol = 2, nrow = nfeats)
-sign_mat <- matrix(0, ncol = 2, nrow = nfeats)
-colnames(f_mat) <- colnames(sign_mat) <- c("RENT", "UBayFS")
+colnames(f_mat) <- c("RENT", "UBayFS")
 
 for(fold_ in 1:nfolds){
   for(fs_ in c("RENT", "UBayFS")){
     features <- feature_df %>% subset(max_s == 20 & fs == fs_ & fold == fold_)
     f_mat[features$index, fs_] <- f_mat[features$index, fs_] + 1
-    sign_mat[features$index, fs_] <- sign_mat[features$index, fs_] + features$sign
   }
 }
 
 feature_counts <- data.frame(block = block_index,
                   prior = ifelse(1:nfeats %in% prior_features_all_ind, "*", ""),
                   name = feat_names,
-                  RENT = paste0(f_mat[,"RENT"], 
-                                  ifelse(sign_mat[,"RENT"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"RENT"] > 0, 
-                                                ifelse(sign_mat[,"RENT"] == f_mat[,"RENT"], "++", "+"),
-                                                ifelse(sign_mat[,"RENT"] == -f_mat[,"RENT"], "--", "-")),
-                                                ")"), "")),
-                  UBayFS = paste0(f_mat[,"UBayFS"], 
-                                  ifelse(sign_mat[,"UBayFS"] != 0, paste0("(", 
-                                         ifelse(sign_mat[,"UBayFS"] > 0, 
-                                                ifelse(sign_mat[,"UBayFS"] == f_mat[,"UBayFS"], "++", "+"),
-                                                ifelse(sign_mat[,"UBayFS"] == -f_mat[,"UBayFS"], "--", "-")),
-                                                ")"), ""))
+                  RENT = f_mat[,"RENT"],
+                  UBayFS = f_mat[,"UBayFS"]
                   )
 
 # original order: blood, image, hist, NA, pat_char, treatment; 
@@ -354,115 +353,115 @@ write.csv(feature_counts, file = "feature_counts_exp1.csv", row.names = FALSE)
 kable(feature_counts[feature_order,], row.names = FALSE)
 ```
 
-| block | prior | name                                        | RENT  | UBayFS |
-|------:|:------|:--------------------------------------------|:------|:-------|
-|     5 | \*    | Age at Diagnosis                            | 2     | 2(–)   |
-|     5 |       | Time from PET to Metastasis (days)          | 0     | 0      |
-|     5 |       | Time from PET to Diagnosis (days)           | 0     | 0      |
-|     5 |       | Time from diag to mets (months)             | 0     | 0      |
-|     5 |       | Sex                                         | 0     | 0      |
-|     5 |       | Loc. Adv. Resectable Disease                | 0     | 0      |
-|     5 |       | Loc. Reccurence                             | 0     | 0      |
-|     5 |       | Metastatic Disease at Time of Diagnosis     | 3(+)  | 0      |
-|     5 |       | Treatment Intention Palliative              | 4(-)  | 4(–)   |
-|     5 |       | Prior Other Cancer                          | 2(++) | 2(–)   |
-|     5 |       | Living Alone                                | 0     | 0      |
-|     5 | \*    | TNM staging Pathological                    | 0     | 0      |
-|     5 |       | Stage grouped Stage IV                      | 0     | 0      |
-|     5 |       | Mets Bone                                   | 5(–)  | 5(–)   |
-|     5 |       | Mets LN Distant                             | 0     | 0      |
-|     5 |       | Mets LN Regional                            | 0     | 0      |
-|     5 |       | Mets LN Retro                               | 0     | 0      |
-|     5 |       | Mets LN                                     | 0     | 0      |
-|     5 |       | Mets Liver                                  | 0     | 0      |
-|     5 |       | Mets Lung                                   | 0     | 0      |
-|     5 |       | Mets Other                                  | 0     | 0      |
-|     5 |       | Mets Skin                                   | 0     | 0      |
-|     5 |       | Primary Tumour Resected                     | 0     | 0      |
-|     5 |       | M-stage M1                                  | 0     | 0      |
-|     5 |       | BMI                                         | 1(–)  | 0      |
-|     5 |       | Non Smoker                                  | 0     | 0      |
-|     5 |       | Smoker                                      | 0     | 0      |
-|     5 |       | Radical Surgery                             | 3(++) | 4      |
-|     5 |       | Co-morbidity Severity 1                     | 0     | 0      |
-|     5 |       | Co-morbidity Severity \> 1                  | 0     | 0      |
-|     5 |       | N-stage N1                                  | 0     | 0      |
-|     5 |       | N-stage \> N1                               | 0     | 0      |
-|     5 | \*    | WHO Perf Stat 1                             | 0     | 0      |
-|     5 | \*    | WHO Perf Stat 2                             | 4(–)  | 5(–)   |
-|     5 | \*    | WHO Perf Stat 3                             | 0     | 0      |
-|     5 | \*    | WHO Perf Stat 4                             | 0     | 0      |
-|     1 |       | Abs. Neutrophil Count                       | 0     | 0      |
-|     1 | \*    | Albumin                                     | 2     | 5(–)   |
-|     1 |       | CRP                                         | 5(-)  | 5(–)   |
-|     1 |       | Creatinine                                  | 0     | 0      |
-|     1 |       | Haemoglobin                                 | 0     | 0      |
-|     1 |       | WBC                                         | 1(–)  | 1(–)   |
-|     1 |       | ALP \> Normal \<= 3UNL                      | 4(–)  | 5(-)   |
-|     1 |       | ALP \> 3UNL                                 | 1(++) | 2      |
-|     1 |       | Chromogranin_A \> Normal \<= 2UNL           | 0     | 0      |
-|     1 |       | Chromogranin_A \> 2UNL                      | 0     | 0      |
-|     1 | \*    | LDH \> Normal \<= 2UNL                      | 0     | 0      |
-|     1 | \*    | LDH \> 2UNL                                 | 0     | 0      |
-|     1 |       | NSE \> Normal \<= 2UNL                      | 0     | 0      |
-|     1 |       | NSE \> 2UNL                                 | 0     | 0      |
-|     1 | \*    | Platelets                                   | 2(–)  | 5(–)   |
-|     3 | \*    | Ki-67                                       | 5(–)  | 5(–)   |
-|     3 |       | Hist Exam Metastasis                        | 0     | 0      |
-|     3 | \*    | Primary Tumour Esophagus                    | 0     | 0      |
-|     3 | \*    | Primary Tumour Gallbladder/duct             | 0     | 0      |
-|     3 | \*    | Primary Tumour Gastric                      | 0     | 1(–)   |
-|     3 | \*    | Primary Tumour Other abdominal              | 0     | 0      |
-|     3 | \*    | Primary Tumour Pancreas                     | 1(++) | 0      |
-|     3 | \*    | Primary Tumour Rectum                       | 0     | 0      |
-|     3 | \*    | Unknown Pr. With Dominance of GI met.       | 0     | 0      |
-|     3 |       | Co-existing Neoplasm Adenoma                | 0     | 0      |
-|     3 |       | Co-existing Neoplasm Dysplasia              | 0     | 0      |
-|     3 |       | No Co-existing Neoplasm                     | 0     | 0      |
-|     3 | \*    | Tumour Morphology WD                        | 4(+)  | 3(-)   |
-|     3 |       | Chromogranin A Staining                     | 0     | 0      |
-|     3 |       | Architecture Infiltrative                   | 1(++) | 0      |
-|     3 |       | Architecture Organoid                       | 1(++) | 0      |
-|     3 |       | Architecture Solid                          | 0     | 0      |
-|     3 |       | Architecture Trabecular                     | 1(–)  | 0      |
-|     3 |       | Vessel Pattern Distant                      | 1(++) | 2      |
-|     3 |       | Biopsy Location Gastric                     | 0     | 0      |
-|     3 |       | Biopsy Location Liver Metastasis            | 0     | 0      |
-|     3 |       | Biopsy Location Lymph Node                  | 0     | 0      |
-|     3 |       | Biopsy Location Oesophagus                  | 0     | 0      |
-|     3 |       | Biopsy Location Pancreas                    | 0     | 0      |
-|     3 |       | Biopsy Location Peritoneum                  | 2     | 0      |
-|     3 |       | No Stroma                                   | 4(++) | 1(++)  |
-|     3 |       | Stroma                                      | 3(++) | 3(-)   |
-|     3 |       | Geographic Necrosis                         | 0     | 2(++)  |
-|     3 |       | Synaptophysin Staining 2+                   | 0     | 0      |
-|     3 |       | Synaptophysin Staining 3+                   | 0     | 1(++)  |
-|     2 |       | Injection to Scan \[min\]                   | 2     | 2(++)  |
-|     2 |       | Weight \[kg\]                               | 2(–)  | 0      |
-|     2 | \*    | Total MTV \[cmˆ3\]                          | 3(+)  | 1(–)   |
-|     2 |       | SUVmean                                     | 0     | 0      |
-|     2 | \*    | SUVmax                                      | 2     | 4(+)   |
-|     2 |       | SUVmean (total)                             | 1(++) | 0      |
-|     2 |       | SUVmax (total)                              | 5(–)  | 5(-)   |
-|     2 | \*    | Total TLG \[g\]                             | 4(+)  | 1(++)  |
-|     2 |       | Institution Rikshospitalet                  | 4(++) | 3(++)  |
-|     2 |       | Institution Ullevaall                       | 0     | 0      |
-|     2 |       | Height \[cm\]                               | 0     | 0      |
-|     2 |       | Glucose \[mmol/L\]                          | 2(–)  | 0      |
-|     6 |       | Time from PET to first treatment (days)     | 0     | 0      |
-|     6 |       | Chemotherapy Type Cisplatin/Etoposide       | 4(+)  | 3(+)   |
-|     6 |       | Chemotherapy Type Other                     | 0     | 0      |
-|     6 |       | Chemotherapy Type Temozolomide/Capecitabine | 1(++) | 0      |
-|     6 |       | Chemotherapy Type Temozolomide/Everolimus   | 4(++) | 5(+)   |
-|     6 |       | Best Response (RECIST) Not Assessed         | 0     | 1(–)   |
-|     6 |       | Best Response (RECIST) Only Clinical PD     | 0     | 0      |
-|     6 |       | Best Response (RECIST) Partial Response     | 2(–)  | 0      |
-|     6 |       | Best Response (RECIST) Progressive Disease  | 0     | 0      |
-|     6 |       | Best Response (RECIST) Stable Disease       | 0     | 0      |
-|     6 |       | Reintroduction with Cisplatin Etoposide     | 0     | 0      |
-|     6 |       | Number of Courses                           | 4(++) | 4(+)   |
-|     6 |       | Treatment Stopped Other                     | 1(++) | 2(++)  |
-|     6 |       | Treatment Stopped Progression of Disease    | 0     | 0      |
-|     6 |       | Treatment Stopped Toxicity                  | 0     | 0      |
-|     6 |       | No Progression                              | 5(++) | 3(++)  |
-|     6 |       | Progression                                 | 3     | 3(+)   |
+| block | prior | name                                        | RENT | UBayFS |
+|------:|:------|:--------------------------------------------|-----:|-------:|
+|     5 | \*    | Age at Diagnosis                            |    2 |      2 |
+|     5 |       | Time from PET to Metastasis (days)          |    0 |      0 |
+|     5 |       | Time from PET to Diagnosis (days)           |    0 |      0 |
+|     5 |       | Time from diag to mets (months)             |    0 |      0 |
+|     5 |       | Sex                                         |    0 |      0 |
+|     5 |       | Loc. Adv. Resectable Disease                |    0 |      0 |
+|     5 |       | Loc. Reccurence                             |    0 |      0 |
+|     5 |       | Metastatic Disease at Time of Diagnosis     |    3 |      0 |
+|     5 |       | Treatment Intention Palliative              |    4 |      4 |
+|     5 |       | Prior Other Cancer                          |    2 |      2 |
+|     5 |       | Living Alone                                |    0 |      0 |
+|     5 | \*    | TNM staging Pathological                    |    0 |      0 |
+|     5 |       | Stage grouped Stage IV                      |    0 |      0 |
+|     5 |       | Mets Bone                                   |    5 |      5 |
+|     5 |       | Mets LN Distant                             |    0 |      0 |
+|     5 |       | Mets LN Regional                            |    0 |      0 |
+|     5 |       | Mets LN Retro                               |    0 |      0 |
+|     5 |       | Mets LN                                     |    0 |      0 |
+|     5 |       | Mets Liver                                  |    0 |      0 |
+|     5 |       | Mets Lung                                   |    0 |      0 |
+|     5 |       | Mets Other                                  |    0 |      0 |
+|     5 |       | Mets Skin                                   |    0 |      0 |
+|     5 |       | Primary Tumour Resected                     |    0 |      0 |
+|     5 |       | M-stage M1                                  |    0 |      0 |
+|     5 |       | BMI                                         |    1 |      0 |
+|     5 |       | Non Smoker                                  |    0 |      0 |
+|     5 |       | Smoker                                      |    0 |      0 |
+|     5 |       | Radical Surgery                             |    3 |      4 |
+|     5 |       | Co-morbidity Severity 1                     |    0 |      0 |
+|     5 |       | Co-morbidity Severity \> 1                  |    0 |      0 |
+|     5 |       | N-stage N1                                  |    0 |      0 |
+|     5 |       | N-stage \> N1                               |    0 |      0 |
+|     5 | \*    | WHO Perf Stat 1                             |    0 |      0 |
+|     5 | \*    | WHO Perf Stat 2                             |    4 |      5 |
+|     5 | \*    | WHO Perf Stat 3                             |    0 |      0 |
+|     5 | \*    | WHO Perf Stat 4                             |    0 |      0 |
+|     1 |       | Abs. Neutrophil Count                       |    0 |      0 |
+|     1 | \*    | Albumin                                     |    2 |      5 |
+|     1 |       | CRP                                         |    5 |      5 |
+|     1 |       | Creatinine                                  |    0 |      0 |
+|     1 |       | Haemoglobin                                 |    0 |      0 |
+|     1 |       | WBC                                         |    1 |      1 |
+|     1 |       | ALP \> Normal \<= 3UNL                      |    4 |      5 |
+|     1 |       | ALP \> 3UNL                                 |    1 |      2 |
+|     1 |       | Chromogranin_A \> Normal \<= 2UNL           |    0 |      0 |
+|     1 |       | Chromogranin_A \> 2UNL                      |    0 |      0 |
+|     1 | \*    | LDH \> Normal \<= 2UNL                      |    0 |      0 |
+|     1 | \*    | LDH \> 2UNL                                 |    0 |      0 |
+|     1 |       | NSE \> Normal \<= 2UNL                      |    0 |      0 |
+|     1 |       | NSE \> 2UNL                                 |    0 |      0 |
+|     1 | \*    | Platelets                                   |    2 |      5 |
+|     3 | \*    | Ki-67                                       |    5 |      5 |
+|     3 |       | Hist Exam Metastasis                        |    0 |      0 |
+|     3 | \*    | Primary Tumour Esophagus                    |    0 |      0 |
+|     3 | \*    | Primary Tumour Gallbladder/duct             |    0 |      0 |
+|     3 | \*    | Primary Tumour Gastric                      |    0 |      1 |
+|     3 | \*    | Primary Tumour Other abdominal              |    0 |      0 |
+|     3 | \*    | Primary Tumour Pancreas                     |    1 |      0 |
+|     3 | \*    | Primary Tumour Rectum                       |    0 |      0 |
+|     3 | \*    | Unknown Pr. With Dominance of GI met.       |    0 |      0 |
+|     3 |       | Co-existing Neoplasm Adenoma                |    0 |      0 |
+|     3 |       | Co-existing Neoplasm Dysplasia              |    0 |      0 |
+|     3 |       | No Co-existing Neoplasm                     |    0 |      0 |
+|     3 | \*    | Tumour Morphology WD                        |    4 |      3 |
+|     3 |       | Chromogranin A Staining                     |    0 |      0 |
+|     3 |       | Architecture Infiltrative                   |    1 |      0 |
+|     3 |       | Architecture Organoid                       |    1 |      0 |
+|     3 |       | Architecture Solid                          |    0 |      0 |
+|     3 |       | Architecture Trabecular                     |    1 |      0 |
+|     3 |       | Vessel Pattern Distant                      |    1 |      2 |
+|     3 |       | Biopsy Location Gastric                     |    0 |      0 |
+|     3 |       | Biopsy Location Liver Metastasis            |    0 |      0 |
+|     3 |       | Biopsy Location Lymph Node                  |    0 |      0 |
+|     3 |       | Biopsy Location Oesophagus                  |    0 |      0 |
+|     3 |       | Biopsy Location Pancreas                    |    0 |      0 |
+|     3 |       | Biopsy Location Peritoneum                  |    2 |      0 |
+|     3 |       | No Stroma                                   |    4 |      1 |
+|     3 |       | Stroma                                      |    3 |      3 |
+|     3 |       | Geographic Necrosis                         |    0 |      2 |
+|     3 |       | Synaptophysin Staining 2+                   |    0 |      0 |
+|     3 |       | Synaptophysin Staining 3+                   |    0 |      1 |
+|     2 |       | Injection to Scan \[min\]                   |    2 |      2 |
+|     2 |       | Weight \[kg\]                               |    2 |      0 |
+|     2 | \*    | Total MTV \[cmˆ3\]                          |    3 |      1 |
+|     2 |       | SUVmean                                     |    0 |      0 |
+|     2 | \*    | SUVmax                                      |    2 |      4 |
+|     2 |       | SUVmean (total)                             |    1 |      0 |
+|     2 |       | SUVmax (total)                              |    5 |      5 |
+|     2 | \*    | Total TLG \[g\]                             |    4 |      1 |
+|     2 |       | Institution Rikshospitalet                  |    4 |      3 |
+|     2 |       | Institution Ullevaall                       |    0 |      0 |
+|     2 |       | Height \[cm\]                               |    0 |      0 |
+|     2 |       | Glucose \[mmol/L\]                          |    2 |      0 |
+|     6 |       | Time from PET to first treatment (days)     |    0 |      0 |
+|     6 |       | Chemotherapy Type Cisplatin/Etoposide       |    4 |      3 |
+|     6 |       | Chemotherapy Type Other                     |    0 |      0 |
+|     6 |       | Chemotherapy Type Temozolomide/Capecitabine |    1 |      0 |
+|     6 |       | Chemotherapy Type Temozolomide/Everolimus   |    4 |      5 |
+|     6 |       | Best Response (RECIST) Not Assessed         |    0 |      1 |
+|     6 |       | Best Response (RECIST) Only Clinical PD     |    0 |      0 |
+|     6 |       | Best Response (RECIST) Partial Response     |    2 |      0 |
+|     6 |       | Best Response (RECIST) Progressive Disease  |    0 |      0 |
+|     6 |       | Best Response (RECIST) Stable Disease       |    0 |      0 |
+|     6 |       | Reintroduction with Cisplatin Etoposide     |    0 |      0 |
+|     6 |       | Number of Courses                           |    4 |      4 |
+|     6 |       | Treatment Stopped Other                     |    1 |      2 |
+|     6 |       | Treatment Stopped Progression of Disease    |    0 |      0 |
+|     6 |       | Treatment Stopped Toxicity                  |    0 |      0 |
+|     6 |       | No Progression                              |    5 |      3 |
+|     6 |       | Progression                                 |    3 |      3 |
