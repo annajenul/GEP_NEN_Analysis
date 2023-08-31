@@ -176,7 +176,7 @@ plot_performance <- function(fs_ = "UBayFS", type_ = "test", metric_ = "RMSE", m
                   y = mean,
                   color = "mean"),
               linewidth = 1) +
-    ylim(0, 3.5)+
+    ylim(0, 3.75)+
     ylab("RMSE") +
     xlab("number of features") + 
     scale_x_continuous(breaks = max_s_opts) +
