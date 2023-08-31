@@ -1,5 +1,5 @@
 ---
-title: "Experiment 1"
+title: "Experiment 1"ed
 author: "Anna Jenul et al."
 date: "August 2023"
 output:
@@ -18,7 +18,7 @@ library(UBayFS)
 
 ```{r matrix initializations}
 # options for maximum number of features (max_s)
-max_s_opts = c(5, 10, 20, 30, 40, 113) # 113 = all features
+max_s_opts = c(5, 10, 20, 30, 40)
 nfolds = 5 # number of folds
 ```
 

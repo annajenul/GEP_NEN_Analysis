@@ -238,10 +238,10 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     5 |       | Loc. Adv. Resectable Disease                | 0     | 0      | 0                   | 0                    |
 |     5 |       | Loc. Reccurence                             | 0     | 0      | 0                   | 0                    |
 |     5 |       | Metastatic Disease at Time of Diagnosis     | 3(+)  | 0      | 0                   | 0                    |
-|     5 |       | Treatment Intention Palliative              | 4(-)  | 3(–)   | 1(–)                | 0                    |
+|     5 |       | Treatment Intention Palliative              | 4(-)  | 4(–)   | 2(–)                | 0                    |
 |     5 |       | Prior Other Cancer                          | 2(++) | 2(–)   | 0                   | 0                    |
 |     5 |       | Living Alone                                | 0     | 0      | 0                   | 0                    |
-|     5 | \*    | TNM staging Pathological                    | 0     | 0      | 0                   | 1(–)                 |
+|     5 | \*    | TNM staging Pathological                    | 0     | 0      | 0                   | 0                    |
 |     5 |       | Stage grouped Stage IV                      | 0     | 0      | 0                   | 0                    |
 |     5 |       | Mets Bone                                   | 5(–)  | 5(–)   | 5(–)                | 0                    |
 |     5 |       | Mets LN Distant                             | 0     | 0      | 0                   | 0                    |
@@ -257,46 +257,43 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     5 |       | BMI                                         | 1(–)  | 0      | 0                   | 0                    |
 |     5 |       | Non Smoker                                  | 0     | 0      | 0                   | 0                    |
 |     5 |       | Smoker                                      | 0     | 0      | 0                   | 0                    |
-|     5 |       | Radical Surgery                             | 3(++) | 4(+)   | 0                   | 0                    |
+|     5 |       | Radical Surgery                             | 3(++) | 4      | 0                   | 0                    |
 |     5 |       | Co-morbidity Severity 1                     | 0     | 0      | 0                   | 0                    |
 |     5 |       | Co-morbidity Severity \> 1                  | 0     | 0      | 0                   | 0                    |
-|     5 |       | T-stage T2                                  | 0     | 0      | 0                   | 0                    |
-|     5 |       | T-stage T3                                  | 0     | 0      | 0                   | 0                    |
-|     5 |       | T-stage T4                                  | 2(–)  | 2(–)   | 0                   | 0                    |
 |     5 |       | N-stage N1                                  | 0     | 0      | 0                   | 0                    |
 |     5 |       | N-stage \> N1                               | 0     | 0      | 0                   | 0                    |
 |     5 | \*    | WHO Perf Stat 1                             | 0     | 0      | 4(+)                | 5(+)                 |
-|     5 | \*    | WHO Perf Stat 2                             | 4(–)  | 5(–)   | 5(-)                | 5(–)                 |
-|     5 | \*    | WHO Perf Stat 3                             | 0     | 0      | 2(–)                | 5(–)                 |
-|     5 | \*    | WHO Perf Stat 4                             | 0     | 0      | 0                   | 2(-)                 |
+|     5 | \*    | WHO Perf Stat 2                             | 4(–)  | 5(–)   | 5(–)                | 5(–)                 |
+|     5 | \*    | WHO Perf Stat 3                             | 0     | 0      | 3(-)                | 4(–)                 |
+|     5 | \*    | WHO Perf Stat 4                             | 0     | 0      | 0                   | 2(–)                 |
 |     1 |       | Abs. Neutrophil Count                       | 0     | 0      | 0                   | 0                    |
-|     1 | \*    | Albumin                                     | 2     | 5(–)   | 5(-)                | 5(+)                 |
-|     1 |       | CRP                                         | 5(-)  | 5(–)   | 5(-)                | 0                    |
+|     1 | \*    | Albumin                                     | 2     | 5(–)   | 5(+)                | 5(+)                 |
+|     1 |       | CRP                                         | 5(-)  | 5(–)   | 4(-)                | 0                    |
 |     1 |       | Creatinine                                  | 0     | 0      | 0                   | 0                    |
 |     1 |       | Haemoglobin                                 | 0     | 0      | 0                   | 0                    |
 |     1 |       | WBC                                         | 1(–)  | 1(–)   | 1(–)                | 0                    |
 |     1 |       | ALP \> Normal \<= 3UNL                      | 4(–)  | 5(-)   | 3(–)                | 0                    |
-|     1 |       | ALP \> 3UNL                                 | 1(++) | 2(++)  | 0                   | 0                    |
+|     1 |       | ALP \> 3UNL                                 | 1(++) | 2      | 0                   | 0                    |
 |     1 |       | Chromogranin_A \> Normal \<= 2UNL           | 0     | 0      | 0                   | 0                    |
 |     1 |       | Chromogranin_A \> 2UNL                      | 0     | 0      | 0                   | 0                    |
-|     1 | \*    | LDH \> Normal \<= 2UNL                      | 0     | 0      | 1(++)               | 4(++)                |
+|     1 | \*    | LDH \> Normal \<= 2UNL                      | 0     | 0      | 1(++)               | 5(++)                |
 |     1 | \*    | LDH \> 2UNL                                 | 0     | 0      | 2                   | 5(+)                 |
 |     1 |       | NSE \> Normal \<= 2UNL                      | 0     | 0      | 0                   | 0                    |
 |     1 |       | NSE \> 2UNL                                 | 0     | 0      | 0                   | 0                    |
 |     1 | \*    | Platelets                                   | 2(–)  | 5(–)   | 5(–)                | 5(–)                 |
 |     3 | \*    | Ki-67                                       | 5(–)  | 5(–)   | 5(–)                | 5(–)                 |
 |     3 |       | Hist Exam Metastasis                        | 0     | 0      | 0                   | 0                    |
-|     3 | \*    | Primary Tumour Esophagus                    | 0     | 0      | 0                   | 4                    |
-|     3 | \*    | Primary Tumour Gallbladder/duct             | 0     | 0      | 5(+)                | 5(-)                 |
-|     3 | \*    | Primary Tumour Gastric                      | 0     | 0      | 5(–)                | 5(-)                 |
+|     3 | \*    | Primary Tumour Esophagus                    | 0     | 0      | 1(–)                | 5(-)                 |
+|     3 | \*    | Primary Tumour Gallbladder/duct             | 0     | 0      | 4(++)               | 5(-)                 |
+|     3 | \*    | Primary Tumour Gastric                      | 0     | 1(–)   | 5(-)                | 5(-)                 |
 |     3 | \*    | Primary Tumour Other abdominal              | 0     | 0      | 2(–)                | 4(–)                 |
-|     3 | \*    | Primary Tumour Pancreas                     | 1(++) | 0      | 4(+)                | 5(+)                 |
-|     3 | \*    | Primary Tumour Rectum                       | 0     | 0      | 2(++)               | 5(+)                 |
-|     3 | \*    | Unknown Pr. With Dominance of GI met.       | 0     | 0      | 1(–)                | 5(-)                 |
-|     3 |       | Co-existing Neoplasm Adenoma                | 0     | 1(++)  | 0                   | 0                    |
+|     3 | \*    | Primary Tumour Pancreas                     | 1(++) | 0      | 4(++)               | 5(+)                 |
+|     3 | \*    | Primary Tumour Rectum                       | 0     | 0      | 3(++)               | 5(+)                 |
+|     3 | \*    | Unknown Pr. With Dominance of GI met.       | 0     | 0      | 0                   | 5(-)                 |
+|     3 |       | Co-existing Neoplasm Adenoma                | 0     | 0      | 0                   | 0                    |
 |     3 |       | Co-existing Neoplasm Dysplasia              | 0     | 0      | 0                   | 0                    |
 |     3 |       | No Co-existing Neoplasm                     | 0     | 0      | 0                   | 0                    |
-|     3 | \*    | Tumour Morphology WD                        | 4(+)  | 4      | 4(-)                | 5(–)                 |
+|     3 | \*    | Tumour Morphology WD                        | 4(+)  | 3(-)   | 4(-)                | 5(–)                 |
 |     3 |       | Chromogranin A Staining                     | 0     | 0      | 0                   | 0                    |
 |     3 |       | Architecture Infiltrative                   | 1(++) | 0      | 0                   | 0                    |
 |     3 |       | Architecture Organoid                       | 1(++) | 0      | 0                   | 0                    |
@@ -310,19 +307,19 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     3 |       | Biopsy Location Pancreas                    | 0     | 0      | 0                   | 0                    |
 |     3 |       | Biopsy Location Peritoneum                  | 2     | 0      | 0                   | 0                    |
 |     3 |       | No Stroma                                   | 4(++) | 1(++)  | 0                   | 0                    |
-|     3 |       | Stroma                                      | 3(++) | 2      | 1(–)                | 0                    |
-|     3 |       | Geographic Necrosis                         | 0     | 2      | 0                   | 0                    |
+|     3 |       | Stroma                                      | 3(++) | 3(-)   | 0                   | 0                    |
+|     3 |       | Geographic Necrosis                         | 0     | 2(++)  | 0                   | 0                    |
 |     3 |       | Synaptophysin Staining 2+                   | 0     | 0      | 0                   | 0                    |
 |     3 |       | Synaptophysin Staining 3+                   | 0     | 1(++)  | 0                   | 0                    |
 |     2 |       | Injection to Scan \[min\]                   | 2     | 2(++)  | 0                   | 0                    |
 |     2 |       | Weight \[kg\]                               | 2(–)  | 0      | 0                   | 0                    |
-|     2 | \*    | Total MTV \[cmˆ3\]                          | 3(+)  | 1(–)   | 5(+)                | 5(–)                 |
+|     2 | \*    | Total MTV \[cmˆ3\]                          | 3(+)  | 1(–)   | 5(++)               | 5(–)                 |
 |     2 |       | SUVmean                                     | 0     | 0      | 0                   | 0                    |
 |     2 | \*    | SUVmax                                      | 2     | 4(+)   | 5(++)               | 5(-)                 |
 |     2 |       | SUVmean (total)                             | 1(++) | 0      | 0                   | 0                    |
 |     2 |       | SUVmax (total)                              | 5(–)  | 5(-)   | 5(–)                | 0                    |
-|     2 | \*    | Total TLG \[g\]                             | 4     | 2(++)  | 5(++)               | 5(+)                 |
-|     2 |       | Institution Rikshospitalet                  | 4(++) | 1(++)  | 0                   | 0                    |
+|     2 | \*    | Total TLG \[g\]                             | 4(+)  | 1(++)  | 5(++)               | 5(+)                 |
+|     2 |       | Institution Rikshospitalet                  | 4(++) | 3(++)  | 0                   | 0                    |
 |     2 |       | Institution Ullevaall                       | 0     | 0      | 0                   | 0                    |
 |     2 |       | Height \[cm\]                               | 0     | 0      | 0                   | 0                    |
 |     2 |       | Glucose \[mmol/L\]                          | 2(–)  | 0      | 0                   | 0                    |
@@ -337,9 +334,9 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     6 |       | Best Response (RECIST) Progressive Disease  | 0     | 0      | 0                   | 0                    |
 |     6 |       | Best Response (RECIST) Stable Disease       | 0     | 0      | 0                   | 0                    |
 |     6 |       | Reintroduction with Cisplatin Etoposide     | 0     | 0      | 0                   | 0                    |
-|     6 |       | Number of Courses                           | 4(++) | 4(++)  | 3(++)               | 0                    |
+|     6 |       | Number of Courses                           | 4(++) | 4(+)   | 2(++)               | 0                    |
 |     6 |       | Treatment Stopped Other                     | 1(++) | 2(++)  | 0                   | 0                    |
 |     6 |       | Treatment Stopped Progression of Disease    | 0     | 0      | 0                   | 0                    |
 |     6 |       | Treatment Stopped Toxicity                  | 0     | 0      | 0                   | 0                    |
-|     6 |       | No Progression                              | 5(++) | 3(++)  | 1(++)               | 0                    |
+|     6 |       | No Progression                              | 5(++) | 3(++)  | 2(++)               | 0                    |
 |     6 |       | Progression                                 | 3     | 3(+)   | 1(–)                | 0                    |

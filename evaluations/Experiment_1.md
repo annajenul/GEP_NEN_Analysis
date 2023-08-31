@@ -4,11 +4,6 @@
 # load RENT features
 RF <- read.csv("../RENT/RENT_features_all.csv")
 RF$index = RF$index + 1 # Python-R-conversion of indices
-colnames(RF) = c("index", "max_s", "fold")
-
-RF_all <- data.frame(index = rep(c(1:113),5), max_s = rep(113, 113*5), fold = rep(1:5, each = 113))
-RF = rbind(RF, RF_all)
-
 
 feature_df <- cbind(RF, fs = "RENT")
 ```
@@ -168,15 +163,15 @@ print(pred_baseline %>% subset((type=="test") & (metric =="RMSE") & (max_s =="al
 
     ##        value metric  model type max_s fold   fs
     ## 3  12.165580   RMSE linear test   all    1 none
-    ## 7   1.592269   RMSE    knn test   all    1 none
+    ## 7   1.484277   RMSE    knn test   all    1 none
     ## 15  6.309293   RMSE linear test   all    2 none
-    ## 19  1.593255   RMSE    knn test   all    2 none
+    ## 19  1.507928   RMSE    knn test   all    2 none
     ## 27 13.828153   RMSE linear test   all    3 none
-    ## 31  1.933754   RMSE    knn test   all    3 none
+    ## 31  2.061035   RMSE    knn test   all    3 none
     ## 39  8.932305   RMSE linear test   all    4 none
     ## 43  1.224745   RMSE    knn test   all    4 none
     ## 51 80.131201   RMSE linear test   all    5 none
-    ## 55  1.356466   RMSE    knn test   all    5 none
+    ## 55  1.462106   RMSE    knn test   all    5 none
 
 # PREDICTION PLOT UBAYFS
 
@@ -369,7 +364,7 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     5 |       | Loc. Adv. Resectable Disease                | 0     | 0      |
 |     5 |       | Loc. Reccurence                             | 0     | 0      |
 |     5 |       | Metastatic Disease at Time of Diagnosis     | 3(+)  | 0      |
-|     5 |       | Treatment Intention Palliative              | 4(-)  | 3(–)   |
+|     5 |       | Treatment Intention Palliative              | 4(-)  | 4(–)   |
 |     5 |       | Prior Other Cancer                          | 2(++) | 2(–)   |
 |     5 |       | Living Alone                                | 0     | 0      |
 |     5 | \*    | TNM staging Pathological                    | 0     | 0      |
@@ -388,12 +383,9 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     5 |       | BMI                                         | 1(–)  | 0      |
 |     5 |       | Non Smoker                                  | 0     | 0      |
 |     5 |       | Smoker                                      | 0     | 0      |
-|     5 |       | Radical Surgery                             | 3(++) | 4(+)   |
+|     5 |       | Radical Surgery                             | 3(++) | 4      |
 |     5 |       | Co-morbidity Severity 1                     | 0     | 0      |
 |     5 |       | Co-morbidity Severity \> 1                  | 0     | 0      |
-|     5 |       | T-stage T2                                  | 0     | 0      |
-|     5 |       | T-stage T3                                  | 0     | 0      |
-|     5 |       | T-stage T4                                  | 2(–)  | 2(–)   |
 |     5 |       | N-stage N1                                  | 0     | 0      |
 |     5 |       | N-stage \> N1                               | 0     | 0      |
 |     5 | \*    | WHO Perf Stat 1                             | 0     | 0      |
@@ -407,7 +399,7 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     1 |       | Haemoglobin                                 | 0     | 0      |
 |     1 |       | WBC                                         | 1(–)  | 1(–)   |
 |     1 |       | ALP \> Normal \<= 3UNL                      | 4(–)  | 5(-)   |
-|     1 |       | ALP \> 3UNL                                 | 1(++) | 2(++)  |
+|     1 |       | ALP \> 3UNL                                 | 1(++) | 2      |
 |     1 |       | Chromogranin_A \> Normal \<= 2UNL           | 0     | 0      |
 |     1 |       | Chromogranin_A \> 2UNL                      | 0     | 0      |
 |     1 | \*    | LDH \> Normal \<= 2UNL                      | 0     | 0      |
@@ -419,15 +411,15 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     3 |       | Hist Exam Metastasis                        | 0     | 0      |
 |     3 | \*    | Primary Tumour Esophagus                    | 0     | 0      |
 |     3 | \*    | Primary Tumour Gallbladder/duct             | 0     | 0      |
-|     3 | \*    | Primary Tumour Gastric                      | 0     | 0      |
+|     3 | \*    | Primary Tumour Gastric                      | 0     | 1(–)   |
 |     3 | \*    | Primary Tumour Other abdominal              | 0     | 0      |
 |     3 | \*    | Primary Tumour Pancreas                     | 1(++) | 0      |
 |     3 | \*    | Primary Tumour Rectum                       | 0     | 0      |
 |     3 | \*    | Unknown Pr. With Dominance of GI met.       | 0     | 0      |
-|     3 |       | Co-existing Neoplasm Adenoma                | 0     | 1(++)  |
+|     3 |       | Co-existing Neoplasm Adenoma                | 0     | 0      |
 |     3 |       | Co-existing Neoplasm Dysplasia              | 0     | 0      |
 |     3 |       | No Co-existing Neoplasm                     | 0     | 0      |
-|     3 | \*    | Tumour Morphology WD                        | 4(+)  | 4      |
+|     3 | \*    | Tumour Morphology WD                        | 4(+)  | 3(-)   |
 |     3 |       | Chromogranin A Staining                     | 0     | 0      |
 |     3 |       | Architecture Infiltrative                   | 1(++) | 0      |
 |     3 |       | Architecture Organoid                       | 1(++) | 0      |
@@ -441,8 +433,8 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     3 |       | Biopsy Location Pancreas                    | 0     | 0      |
 |     3 |       | Biopsy Location Peritoneum                  | 2     | 0      |
 |     3 |       | No Stroma                                   | 4(++) | 1(++)  |
-|     3 |       | Stroma                                      | 3(++) | 2      |
-|     3 |       | Geographic Necrosis                         | 0     | 2      |
+|     3 |       | Stroma                                      | 3(++) | 3(-)   |
+|     3 |       | Geographic Necrosis                         | 0     | 2(++)  |
 |     3 |       | Synaptophysin Staining 2+                   | 0     | 0      |
 |     3 |       | Synaptophysin Staining 3+                   | 0     | 1(++)  |
 |     2 |       | Injection to Scan \[min\]                   | 2     | 2(++)  |
@@ -452,8 +444,8 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     2 | \*    | SUVmax                                      | 2     | 4(+)   |
 |     2 |       | SUVmean (total)                             | 1(++) | 0      |
 |     2 |       | SUVmax (total)                              | 5(–)  | 5(-)   |
-|     2 | \*    | Total TLG \[g\]                             | 4     | 2(++)  |
-|     2 |       | Institution Rikshospitalet                  | 4(++) | 1(++)  |
+|     2 | \*    | Total TLG \[g\]                             | 4(+)  | 1(++)  |
+|     2 |       | Institution Rikshospitalet                  | 4(++) | 3(++)  |
 |     2 |       | Institution Ullevaall                       | 0     | 0      |
 |     2 |       | Height \[cm\]                               | 0     | 0      |
 |     2 |       | Glucose \[mmol/L\]                          | 2(–)  | 0      |
@@ -468,7 +460,7 @@ kable(feature_counts[feature_order,], row.names = FALSE)
 |     6 |       | Best Response (RECIST) Progressive Disease  | 0     | 0      |
 |     6 |       | Best Response (RECIST) Stable Disease       | 0     | 0      |
 |     6 |       | Reintroduction with Cisplatin Etoposide     | 0     | 0      |
-|     6 |       | Number of Courses                           | 4(++) | 4(++)  |
+|     6 |       | Number of Courses                           | 4(++) | 4(+)   |
 |     6 |       | Treatment Stopped Other                     | 1(++) | 2(++)  |
 |     6 |       | Treatment Stopped Progression of Disease    | 0     | 0      |
 |     6 |       | Treatment Stopped Toxicity                  | 0     | 0      |

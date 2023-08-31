@@ -24,11 +24,6 @@ library(knitr)
 # load RENT features
 RF <- read.csv("../RENT/RENT_features_all.csv")
 RF$index = RF$index + 1 # Python-R-conversion of indices
-colnames(RF) = c("index", "max_s", "fold")
-
-RF_all <- data.frame(index = rep(c(1:113),5), max_s = rep(113, 113*5), fold = rep(1:5, each = 113))
-RF = rbind(RF, RF_all)
-
 
 feature_df <- cbind(RF, fs = "RENT")
 ```
